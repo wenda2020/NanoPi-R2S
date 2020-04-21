@@ -2,14 +2,18 @@ name: NanoPi-R2S RK3328 OpenWrt 19.07 Build
 
 on:
   push:
-    paths:
-      - 'CHANGELOG.md'
+    branches: 
+      - master
+
+env:
+  SSH_ACTIONS: true
+  TZ: Asia/Shanghai
 
 jobs:
 
   build:
 
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
 
@@ -121,6 +125,10 @@ jobs:
         run: |
           rm -f friendlywrt-rk3328/friendlywrt/.config*
           cp r2s-rk3328-config friendlywrt-rk3328/configs/config_rk3328
+      
+      - name: SSH connection to Actions
+        uses: P3TERX/debugger-action@master
+        if: env.SSH_ACTIONS == 'true'
 
       - name: Set Default Values
         run: |
